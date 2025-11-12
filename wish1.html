@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Enga namma porom..............................................gundoda birthday kku!!!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: "Poppins", sans-serif;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff7eb3, #65d6ff);
+      transition: background 2s ease;
+    }
+
+    .quiz-box {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .quiz-box h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .quiz-box input {
+      padding: 10px;
+      width: 80%;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .quiz-box button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #ff7eb3, #65d6ff);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .hint {
+      color: #e91e63;
+      font-weight: 600;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* ✅ Scrollable wish container */
+    .wish-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff7eb3, #65d6ff);
+      color: white;
+      text-align: center;
+      animation: fadeIn 2s ease forwards;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 80px 20px 40px; /* Increased top padding */
+      scroll-behavior: smooth;
+    }
+
+    /* ✅ More visible heading */
+    .wish-container h1 {
+      font-size: 65px; /* Bigger and bold */
+      font-weight: 900;
+      margin-bottom: 25px;
+      text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(255, 255, 255, 0.6);
+      letter-spacing: 2px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px 20px;
+      border-radius: 15px;
+    }
+
+    .wish-container p {
+      font-size: 20px;
+      max-width: 800px;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    .confetti, .skyshot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+  </style>
+</head>
+<body>
+  <div class="quiz-box" id="quizBox">
+    <h2>Hii!!🤗 vanga vanga, nan dha ungala indha page ulla kootitu pogapora bot🤖😁. aparam indha page ulla poganum na... Neenga yarunu sollanum okiee😎</h2>
+    <h2>Ipa sollunga Neenga yaaru🧐?</h2>
+    <input id="answerInput" placeholder="Type your answer here" />
+    <br>
+    <button onclick="checkAnswer()">Submit</button>
+    <div id="hint" class="hint">🤦‍♀️iyyo Neenga yaarunu ungalukkeh thrlaya🤣 neenga mental hospital🏥 aah irundhu escape agivandha "gundu" nu enga Boss😎 sonnaru🤣</div>
+  </div>
+  <canvas class="skyshot"></canvas>
+
+  <script>
+    function checkAnswer(){
+      const ans = document.getElementById('answerInput').value.trim().toLowerCase();
+      const hint = document.getElementById('hint');
+      if(ans === 'gundu'){
+        document.getElementById('quizBox').style.display='none';
+        startSkyshot();
+        setTimeout(showWishPage, 3000);
+      } else {
+        hint.style.display='block';
+      }
+    }
+
+    function startSkyshot(){
+      const canvas = document.querySelector('.skyshot');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const particles = [];
+      for(let i=0;i<20;i++){
+        particles.push({
+          x: Math.random()*canvas.width,
+          y: canvas.height,
+          r: 4,
+          color: `hsl(${Math.random()*360},100%,70%)`,
+          vy: -(Math.random()*10+10)
+        });
+      }
+
+      let explosions = [];
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach(p=>{
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle=p.color;
+          ctx.fill();
+        });
+        explosions.forEach(ex=>{
+          ex.forEach(e=>{
+            ctx.beginPath();
+            ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+            ctx.fillStyle=e.color;
+            ctx.fill();
+          });
+        });
+      }
+
+      function update(){
+        particles.forEach(p=>{
+          p.y+=p.vy;
+          p.vy+=0.5;
+          if(p.vy>0 && !p.exploded){
+            p.exploded=true;
+            explosions.push(Array.from({length:50}).map(()=>({
+              x:p.x,
+              y:p.y,
+              r:2,
+              vx:Math.random()*8-4,
+              vy:Math.random()*8-4,
+              color:`hsl(${Math.random()*360},100%,70%)`
+            })));
+          }
+        });
+        explosions.forEach(ex=>ex.forEach(e=>{
+          e.x+=e.vx;
+          e.y+=e.vy;
+          e.vy+=0.1;
+        }));
+      }
+
+      function loop(){ draw(); update(); requestAnimationFrame(loop); }
+      loop();
+      setTimeout(()=>canvas.style.display='none',3000);
+    }
+
+    function showWishPage(){
+      document.body.style.overflow = "auto";
+      document.body.innerHTML = `
+        <div class="wish-container">
+          <h1>................................</h1>
+          <h1>🎉 Happiest Birthday Natpeh!! 🫶</h1>
+          <p>
+            Wishing you a day full of smiles, laughter, and love!💖, idhu unnoda 20th birthday🥳 nanbikaga ennoda simple wish-un goals enna nu set pannu aprm unnoda dreams la success aagatum😊 Aprm epayum ipa irukuramaari jollya iru😊
+            iniyachum chinna pullathanama azhuvadha😁... nee sensitive person nu thriyum gundeh irundalum chinna chinna visiyathukkala azhuvadha nu soldren cheriya aprm na unakku eppayum soldradhudha..
+            na mattum illa namma thalapathi😎 uum solli irukkaru ennanu unakkeh thriyum irundhalum soldren enna nadandhalum ALL IS WELL❤️‍🩹 solliko gundeh...
+            aprm na adikadi konjam mental😆 aagi irukken andha time la phone panniyo illa msg panniyo enna aachu ketirukka unmaiya sollanumna munnadila adhavadhu before clg enakku
+            oru maari kastama irundhuchuna silent aah apdiyeh irundhuruven aana ipa apd illa namma frnds💖 aanadhukku aprm yen na unta konjam neram pesnana mental la irundhu velila vandhruveh😁
+            thriyuma... gundeh🥲 namma idhuvara oru photo kooda eduthukala thriyuma innaikku eduthukalam oru memories kaga hehehe😁... eppavum namma idhey pola best friends aah jolly aah irupom🫶💖
+            aprm indha birthday va jollyaah celebrate pannu enjoy pannu.... gundeh edho oru flow la type panni irukken edhachum mistake aah irundha mannichu😁 once again "EN INIYA THOZHIKKU INIYA PIRANDHA NAAL VAZHTHUKKAL"💖🫶
+          </p>
+          <audio controls autoplay>
+            <source src="Nanbiye.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+        <canvas class='confetti'></canvas>
+      `;
+      startConfetti();
+    }
+
+    function startConfetti(){
+      const canvas = document.querySelector('.confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const confetti = Array.from({length:150}).map(()=>({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height - canvas.height,
+        r:Math.random()*6+2,
+        d:Math.random()*0.5+0.5,
+        color:`hsl(${Math.random()*360},100%,70%)`
+      }));
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        confetti.forEach(p=>{
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle=p.color;
+          ctx.fill();
+        });
+        update();
+      }
+      function update(){
+        confetti.forEach(p=>{
+          p.y+=p.d*4;
+          if(p.y>canvas.height){p.y=-10;p.x=Math.random()*canvas.width;}
+        });
+      }
+      function loop(){draw();requestAnimationFrame(loop);}
+      loop();
+    }
+  </script>
+</body>
+</html>
